@@ -1,0 +1,198 @@
+<template>
+  <div style="text-align:left">
+    <el-row>
+      <el-col :span="1" :offset="23">
+        <el-button
+          size="small"
+          type="primary"
+          @click="dialogFormVisible=true"
+          icon="el-icon-plus"
+          circle
+        />
+      </el-col>
+    </el-row>
+    <el-row style="margin-top:1em;">
+      <el-table :data="nocaches" style="width: 100%">
+        <el-table-column label="ID" width="300">
+          <template slot-scope="scope">
+            <span style="margin-left: 10px">{{ scope.row.id }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="正则表达式" width="300">
+          <template slot-scope="scope">
+            <el-popover trigger="hover" placement="top">
+              <p>表达式: {{ scope.row.regular }}</p>
+              <div slot="reference" class="name-wrapper">
+                <el-tag size="medium" type="success">{{ scope.row.regular }}</el-tag>
+              </div>
+            </el-popover>
+          </template>
+        </el-table-column>
+        <el-table-column label="启用状态" width="300">
+          <template slot-scope="scope">
+            <el-switch
+              v-model="scope.row.enabled"
+              size="small"
+              @change="enableNocacheRule(scope.$index)"
+            ></el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button
+              icon="el-icon-edit"
+              size="small"
+              @click="{dialogFormVisible = true, form=nocaches[scope.$index]}"
+              circle
+            ></el-button>
+            <el-button
+              icon="el-icon-delete"
+              size="small"
+              type="danger"
+              @click="hdlDelNocacheRule(scope.row.id)"
+              circle
+            ></el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-row>
+    <el-row>
+      <el-pagination
+        @current-change="handleCurrentChange"
+        :current-page="curPage"
+        :page-size="8"
+        layout="total, prev, pager, next, jumper"
+        :total="total"
+      ></el-pagination>
+    </el-row>
+    <!-- new dialog -->
+    <el-dialog
+      :title="form.id.length?'更新配置':'新增配置'"
+      :visible.sync="dialogFormVisible"
+      width="400px"
+    >
+      <el-form ref="refForm" :model="form" label-position="left">
+        <el-form-item label="正则表达式" label-width="100px">
+          <el-input v-model="form.regular" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="是否启用" label-width="100px">
+          <el-switch v-model="form.enabled"></el-switch>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="() => {dialogFormVisible = false, resetform()}" size="small">取 消</el-button>
+        <el-button type="primary" @click="hdlEditNocacheRule" size="small">确 定</el-button>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+<script>
+import Cache from "@/components/Cache";
+import { cacheapi } from "@/apis";
+export default {
+  name: "PluginCache",
+  data() {
+    return {
+      curPage: 1,
+      nocaches: [],
+      total: 0,
+      dialogFormVisible: false,
+      form: {
+        id: "",
+        regular: "",
+        enabled: true
+      }
+    };
+  },
+  components: {
+    iCache: Cache
+  },
+  methods: {
+    handleCurrentChange(page) {
+      this.curPage = page;
+      this.refresh();
+    },
+    getCacheRules(page) {
+      let limit = 8;
+      let offset = (this.curPage - 1) * limit;
+      cacheapi
+        .getCacheRules({ limit, offset })
+        .then(data => {
+          // console.log(data);
+          this.nocaches = data.rules;
+          this.total = data.total;
+          this.$message.success(data.message);
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    },
+    // async hdlNewNocacheRule() {
+    //   let { enabled, regular } = this.form;
+    //   this.dialogFormVisible = false;
+    //   this.resetform();
+    //   await cacheapi
+    //     .newCacheRule({ enabled, regular })
+    //     .then(data => this.$message.success(data.message))
+    //     .catch(err => {
+    //       console.error(err);
+    //       return;
+    //     });
+    //   this.refresh();
+    // },
+    async enableNocacheRule(idx) {
+      // this.dialogFormVisible = false;
+      let { id, regular, enabled } = this.nocaches[idx];
+      await cacheapi
+        .editCacheRule({ id, regular, enabled })
+        .then(data => this.$message.success(data.message))
+        .catch(err => console.error(err));
+      this.refresh();
+    },
+    async hdlEditNocacheRule() {
+      let { id, regular, enabled } = this.form;
+      this.dialogFormVisible = false;
+      this.resetform();
+      // edit
+      if (id.length) {
+        await cacheapi
+          .editCacheRule({ id, regular, enabled })
+          .then(data => this.$message.success(data.message))
+          .catch(err => console.error(err));
+      } else {
+        // new
+        await cacheapi
+          .newCacheRule({ enabled, regular })
+          .then(data => this.$message.success(data.message))
+          .catch(err => {
+            console.error(err);
+            return;
+          });
+      }
+      this.refresh();
+    },
+    async hdlDelNocacheRule(id) {
+      // let { id } = this.nocache;
+      // console.log(this.nocache, id)
+      await cacheapi
+        .delCacheRule({ id })
+        .then(data => this.$message.success(data.message))
+        .catch(err => console.error(err));
+      this.refresh();
+    },
+    refresh() {
+      this.getCacheRules(this.curPage);
+    },
+    resetform() {
+      this.form = { id: "", regular: "", enabled: true };
+    }
+  },
+  async created() {
+    await this.getCacheRules(this.curPage);
+  }
+};
+</script>
+
+
+<style scoped>
+</style>

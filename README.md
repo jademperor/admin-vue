@@ -1,2 +1,3 @@
 # admin-vue
-admin pages based vue
+
+admin pages of gateway manager
