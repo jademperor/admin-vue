@@ -97,7 +97,9 @@ export default {
       await proxyapi
         .delServerRule({ id })
         .then(data => this.$message.success(data.message))
-        .catch(err => console.error(err));
+        .catch(err => {
+          console.error(err);
+        });
       this.refresh();
     },
     async editServerRule() {

@@ -1,63 +1,73 @@
 <template>
   <div id="app">
-    <el-container>
+    <el-container style="height:100%">
       <!-- header -->
-      <el-header height="100">
-        <!-- top bar -->
-        <el-menu
-          :default-active="activeIndex"
-          class="el-menu-demo"
-          mode="horizontal"
-          @select="handleSelect"
-        >
-          <el-menu-item index="0">
-            <img src="@/assets/logo.png" alt="logo" width="50px">
-          </el-menu-item>
-          <el-menu-item index="gate.global">概览</el-menu-item>
-          <el-menu-item index="gate.basic">基本配置</el-menu-item>
-          <el-submenu index="gate.plugin">
-            <template slot="title">插件配置</template>
-            <el-menu-item index="gate.plugin.cache">缓存插件</el-menu-item>
-            <el-menu-item index="gate.plugin.rbac">鉴权插件</el-menu-item>
-            <el-menu-item index="gate.plugin.ratelimit" disabled>限流插件(暂不支持配置)</el-menu-item>
-            <el-menu-item index="gate.plugin.httplog" disabled>日志插件(暂不支持配置)</el-menu-item>
-            <el-submenu index="gate.plugin.proxy">
-              <template slot="title">代理插件</template>
-              <el-menu-item index="gate.plugin.proxy.path">路径代理</el-menu-item>
-              <el-menu-item index="gate.plugin.proxy.server">服务代理</el-menu-item>
-              <el-menu-item index="gate.plugin.proxy.reverseServer">服务实例组</el-menu-item>
-            </el-submenu>
-          </el-submenu>
-          <el-menu-item index="gate.plugins">插件管理</el-menu-item>
-          <el-menu-item index="gate.repo">
-            <a href="https://github.com/yeqown/gateway" target="_blank">Github</a>
-          </el-menu-item>
-        </el-menu>
-        <!-- bread cumb -->
-        <el-breadcrumb separator="/" class="breadcumb">
-          <el-breadcrumb-item
-            v-for="(breadcrumb,idx) in breadcrumbs"
-            :key="idx"
-            :to="breadcrumb.to"
-          >{{breadcrumb.name}}</el-breadcrumb-item>
-          <!-- <el-breadcrumb-item><a href="/">活动管理</a></el-breadcrumb-item> -->
-        </el-breadcrumb>
+      <el-header style="background-color:#f56c6c">
+        <el-row>
+          <el-col :span="1" :offset="0">
+            <img src="@/assets/logo.png" alt="logo" width="50px" style="border-radius:50px">
+          </el-col>
+        </el-row>
       </el-header>
 
-      <!-- body -->
-      <el-main class="main">
-        <transition name="fade">
-          <router-view/>
-        </transition>
-      </el-main>
-    </el-container>
+      <el-container>
+        <!-- aside  subMenu -->
+        <el-aside style="text-align:left">
+          <el-menu
+            :default-active="activeIndex"
+            class="el-menu-demo"
+            @select="handleSelect"
+            active-text-color="#f56c6c"
+            :collapse="isCollapse"
+            :default-openeds="['gate.plugin', 'gate.proxy']"
+          >
+            <el-menu-item index="gate.overview">
+              <i class="el-icon-location"></i>
+              <span slot="title">Overview</span>
+            </el-menu-item>
+            <el-menu-item index="gate.basic">
+              <i class="el-icon-setting"></i>
+              <span slot="title">Basic Config</span>
+            </el-menu-item>
+            <el-submenu index="gate.plugin">
+              <template slot="title">
+                <i class="el-icon-upload"></i>
+                <span slot="title">Plugins Config</span>
+              </template>
+              <el-menu-item index="gate.plugin.cache">Cache</el-menu-item>
+              <el-menu-item index="gate.plugin.ratelimit" disabled>Ratelimit(not support yet)</el-menu-item>
+              <el-menu-item index="gate.plugin.httplog" disabled>HTTP Log(not support yet)</el-menu-item>
+            </el-submenu>
+            <el-submenu index="gate.proxy">
+              <template slot="title">
+                <i class="el-icon-upload"></i>
+                <span slot="title">Proxier</span>
+              </template>
+              <el-menu-item index="gate.proxy.clusters">Clusters</el-menu-item>
+              <el-menu-item index="gate.proxy.apis">APIs</el-menu-item>
+              <el-menu-item index="gate.proxy.routings">Routings</el-menu-item>
+            </el-submenu>
+          </el-menu>
+        </el-aside>
 
-    <!-- <el-footer>
-      <p>
-        Copyright@yeqown 2018
-        yeqwon@gmail.com
-      </p>
-    </el-footer>-->
+        <!-- main body -->
+        <el-main>
+          <!-- breadcrumb -->
+          <el-breadcrumb separator="/" class="breadcrumb">
+            <el-breadcrumb-item
+              v-for="(breadcrumb,idx) in breadcrumbs"
+              :key="idx"
+              :to="breadcrumb.to"
+            >{{breadcrumb.name}}</el-breadcrumb-item>
+            <!-- <el-breadcrumb-item><a href="/">活动管理</a></el-breadcrumb-item> -->
+          </el-breadcrumb>
+
+          <transition name="fade">
+            <router-view/>
+          </transition>
+        </el-main>
+      </el-container>
+    </el-container>
   </div>
 </template>
 
@@ -67,7 +77,8 @@ export default {
   name: "app",
   data() {
     return {
-      activeIndex: "1",
+      isCollapse: false,
+      activeIndex: "gate.overview",
       breadcrumbs: [
         {
           name: "导航页",
@@ -81,7 +92,7 @@ export default {
       console.log("menu selectd: ", key);
       this.activeIndex = key;
       switch (key) {
-        case "gate.global":
+        case "gate.overview":
           this.$router.push("/dashbord");
           break;
         case "gate.basic":
@@ -90,17 +101,14 @@ export default {
         case "gate.plugin.cache":
           this.$router.push("/configs/plugin/cache");
           break;
-        case "gate.plugin.rbac":
-          this.$router.push("/configs/plugin/rbac");
+        case "gate.proxy.clusters":
+          this.$router.push("/configs/proxy/clusters");
           break;
-        case "gate.plugin.proxy.reverseServer":
-          this.$router.push("/configs/plugin/proxy/reverse_server");
+        case "gate.proxy.apis":
+          this.$router.push("/configs/proxy/apis");
           break;
-        case "gate.plugin.proxy.path":
-          this.$router.push("/configs/plugin/proxy/pathrule");
-          break;
-        case "gate.plugin.proxy.server":
-          this.$router.push("/configs/plugin/proxy/serverrule");
+        case "gate.proxy.routings":
+          this.$router.push("/configs/proxy/routings");
           break;
         case "gate.plugins":
           this.$router.push("/plugins");
@@ -132,17 +140,11 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  width: 80%;
-  margin: 0 auto;
-  min-height: 600px;
-  /* margin-top: 60px; */
+  width: 100%;
+  height: 100%;
 }
 
-.breadcumb {
-  margin: 1em;
-}
-
-.main {
-  min-height: 400px;
+.breadcrumb {
+  margin: 1em 1em 1em 0;
 }
 </style>

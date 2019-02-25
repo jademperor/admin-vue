@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="12" :offset="6">
+      <el-col :span="24" :offset="0">
         <el-form
           :model="form"
           :rules="rules"
@@ -10,18 +10,12 @@
           label-position="right"
           class="form"
         >
-          <!-- <el-form-item label="网关端口号" prop="port">
-            <el-input-number v-model="form.port"/>
-          </el-form-item> -->
-          <el-form-item label="域名配置" prop="baseURL">
+          <el-form-item label="Domain" prop="baseURL">
             <el-input v-model="form.baseURL"/>
           </el-form-item>
-          <!-- <el-form-item label="日志文件夹" prop="logpath">
-            <el-input v-model="form.logpath"/>
-          </el-form-item> -->
           <el-form-item>
-            <el-button type="primary" @click="updateBasicConfig">确认</el-button>
-            <el-button type="danger" @click="reset">重置</el-button>
+            <el-button type="primary" @click="updateBasicConfig">Submit</el-button>
+            <el-button type="danger" @click="reset">Reset</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -31,21 +25,21 @@
 <script>
 import { basicapi, resetBaseURL, baseURL } from "@/apis/index";
 export default {
-  name: "BaseConfig",
+  name: "Base",
   data() {
     return {
-      // confirmDisabled: true,
       form: {
-        baseURL: "http://localhost:8989"
+        baseURL: "http://localhost:8999"
       },
       rules: {
-        baseURL: [{ required: true, message: "请输入服务端域名" }]
+        baseURL: [{ required: true, message: "input gateway-manager domain" }]
       }
     };
   },
   methods: {
     reset() {
-      // resetBaseURL({ baseURL: "http://localhost:7777" });
+      this.form.baseURL = "http://localhost:8999";
+      resetBaseURL({ baseURL: this.form.baseURL });
     },
     updateBasicConfig() {
       // this.$refs.form.validate((isValid, obj) => {
@@ -74,12 +68,12 @@ export default {
     }
   },
   created() {
-    this.form.baseURL = baseURL
+    this.form.baseURL = baseURL;
     // basicapi
     //   .getGlobalConfig()
     //   .then(data => {
     //     this.form.port = data.port
-    //     this.form.logpath = data.logpath 
+    //     this.form.logpath = data.logpath
     //   })
     //   .catch(err => {
     //     this.$notify.error({

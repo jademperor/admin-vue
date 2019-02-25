@@ -8,7 +8,7 @@ import * as proxyapi from './proxy'
 
 export { basicapi, cacheapi, proxyapi }
 
-export const baseURL = 'http://localhost:8989'
+export const baseURL = 'http://localhost:8999'
 
 var defaultHeaders = {};
 
@@ -79,7 +79,7 @@ export function postAPI({ uri, params = null, headers = defaultHeaders }) {
     })
 }
 
-export function deleteAPI({ uri, params = null, headers = defaultHeaders}) {
+export function deleteAPI({ uri, params = null, headers = defaultHeaders }) {
     let p = serializeForm(params)
     if (isJSONHeader(headers)) {
         p = params

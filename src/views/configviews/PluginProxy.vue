@@ -8,9 +8,11 @@
       <router-link to="reverse_server">Reverse Server</router-link>
       <br>
     </template>
-    <transition name="fade">
-      <router-view></router-view>
-    </transition>
+    <div style="width:90%;margin:0 auto;">
+      <transition name="fade">
+        <router-view></router-view>
+      </transition>
+    </div>
   </div>
 </template>
 <script>
