@@ -1,9 +1,18 @@
 import { getAPI, putAPI, postAPI, deleteAPI } from '.'
 
-// reverse server config api functions
-
+// Cluster config api functions
 export function getClusters() {
-    return getAPI({ uri: "/v1/clusters", params: null })
+    return getAPI({
+        uri: "/v1/clusters",
+        params: null
+    })
+}
+
+export function getClusterIDs() {
+    return getAPI({
+        uri: "/v1/cluster_ids",
+        params: null
+    })
 }
 
 export function getClusterInfo({ clusterID }) {
@@ -79,9 +88,9 @@ export function newRouting({ prefix, target_cluster_id, need_strip_prefix }) {
     })
 }
 
-export function editRouting({ id, prefix, target_cluster_id, need_strip_prefix }) {
+export function updateRouting({ idx, prefix, target_cluster_id, need_strip_prefix }) {
     return putAPI({
-        uri: "/v1/routings/" + id,
+        uri: "/v1/routings/" + idx,
         params: { prefix, target_cluster_id, need_strip_prefix }
     })
 }

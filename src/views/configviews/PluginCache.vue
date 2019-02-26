@@ -87,7 +87,6 @@
   </div>
 </template>
 <script>
-// import Cache from "@/components/Cache";
 import { cacheapi } from "@/apis";
 export default {
   name: "PluginCache",
@@ -104,9 +103,7 @@ export default {
       }
     };
   },
-  components: {
-    // iCache: Cache
-  },
+  components: {},
   methods: {
     handleCurrentChange(page) {
       this.curPage = page;

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin-top:2em;">
     <el-row style="margin-bottom: 1em; text-align:left">
       <el-col :span="6">Cluster Name:
         <el-tag type="primary" size="small">{{clusterName}}</el-tag>
@@ -26,62 +26,55 @@
     </el-row>
 
     <!-- instance list -->
-    <template v-if="instances && instances.length">
-      <el-row style="margin-top:1em;">
-        <el-table :data="instances" style="width: 100%">
-          <el-table-column label="ID" width="100">
-            <template slot-scope="scope">
-              <router-link :to="`${clusterID}/${scope.row.idx}`">
-                <a style="margin-left: 10px">{{scope.row.idx}}</a>
-              </router-link>
-            </template>
-          </el-table-column>
-          <el-table-column label="Instance Name" width="200">
-            <template slot-scope="scope">
-              <div slot="reference" class="name-wrapper">
-                <el-tag size="medium" type="success">{{ scope.row.name }}</el-tag>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column label="Instance Addr" width="200">
-            <template slot-scope="scope">
-              <span size="medium">{{ scope.row.addr }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="Weight" width="100">
-            <template slot-scope="scope">
-              <span size="medium">{{ scope.row.weight }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="Health check">
-            <template slot-scope="scope">
-              <el-switch v-model="scope.row.need_check_health" disabled/>
-            </template>
-          </el-table-column>
-          <el-table-column label="Alive">
-            <template slot-scope="scope">
-              <span>{{scope.row.is_alive}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="Operation">
-            <template slot-scope="scope">
-              <el-button
-                icon="el-icon-delete"
-                size="small"
-                type="danger"
-                @click="hdlDelClusterInstance(scope.row.idx)"
-                circle
-              ></el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-row>
-    </template>
-    <!-- <template v-else>
-      <h2 style="color:gray">
-        <i class="el-icon-info"></i> 暂无配置
-      </h2>
-    </template>-->
+    <el-row style="margin-top:1em;">
+      <el-table :data="instances" style="width: 100%">
+        <el-table-column label="ID" width="100">
+          <template slot-scope="scope">
+            <router-link :to="`${clusterID}/${scope.row.idx}`">
+              <a style="margin-left: 10px">{{scope.row.idx}}</a>
+            </router-link>
+          </template>
+        </el-table-column>
+        <el-table-column label="Instance Name" width="200">
+          <template slot-scope="scope">
+            <div slot="reference" class="name-wrapper">
+              <el-tag size="medium" type="success">{{ scope.row.name }}</el-tag>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="Instance Addr" width="200">
+          <template slot-scope="scope">
+            <span size="medium">{{ scope.row.addr }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Weight" width="100">
+          <template slot-scope="scope">
+            <span size="medium">{{ scope.row.weight }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Health check">
+          <template slot-scope="scope">
+            <el-switch v-model="scope.row.need_check_health" disabled/>
+          </template>
+        </el-table-column>
+        <el-table-column label="Alive">
+          <template slot-scope="scope">
+            <span>{{scope.row.is_alive}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Operation">
+          <template slot-scope="scope">
+            <el-button
+              icon="el-icon-delete"
+              size="small"
+              type="danger"
+              @click="hdlDelClusterInstance(scope.row.idx)"
+              circle
+            ></el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-row>
     <!-- new server instance config dialog -->
     <el-dialog
       :title="!newInstanceForm.idx?'New Instance':'Update '"

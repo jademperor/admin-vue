@@ -72,7 +72,6 @@
   </div>
 </template>
 <script>
-// import Cache from "@/components/Cache";
 import { proxyapi } from "@/apis";
 export default {
   name: "Clusters",
