@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div style="margin-top: 2em">
     <el-form :model="api" ref="api" label-width="150px" style="text-align:left">
       <el-form-item v-if="api.idx" label="API ID">
-        <el-input v-model="api.idx" disabled></el-input>
+        <el-input v-model="api.idx" size="small" disabled></el-input>
       </el-form-item>
       <el-form-item label="URI">
         <el-input v-model="api.path" size="small" placeholder="/gateway/uri2"></el-input>
@@ -11,7 +11,15 @@
         <el-input v-model="api.rewrite_path" size="small" placeholder="/srv/uri1"></el-input>
       </el-form-item>
       <el-form-item label="Cluster ID">
-        <el-input v-model="api.target_cluster_id" size="small" placeholder="clusterID"></el-input>
+        <el-select v-model="api.target_cluster_id" placeholder="Choose one" size="small">
+          <el-option
+            v-for="(cfg, idx) in clusterIds"
+            :key="`comb_cfg_${idx}`"
+            :value="cfg.idx"
+            :label="`${cfg.name}(${cfg.idx})`"
+          ></el-option>
+        </el-select>
+        <!-- <el-input v-model="api.target_cluster_id" size="small" placeholder="clusterID"></el-input> -->
       </el-form-item>
       <el-form-item label="Combination">
         <el-switch v-model="api.need_combine" size="small"></el-switch>
@@ -45,6 +53,7 @@
             :idx="idx"
             :delFunc="removeCombineReqCfg"
             :change="updateCombineReqCfg"
+            :clusterIds="clusterIds"
           ></i-combine-req-cfg>
         </el-form-item>
       </div>
@@ -71,6 +80,7 @@ export default {
   data() {
     return {
       typ: "edit",
+      clusterIds: [],
       api: {
         idx: "",
         method: "GET",
@@ -92,13 +102,28 @@ export default {
         })
         .catch(err => this.$message.error(err.message));
     },
+
+    getAllClusterIds() {
+      proxyapi
+        .getClusterIDs()
+        .then(data => {
+          this.clusterIds = data.cluster_ids;
+          console.log(this.clusterIds);
+        })
+        .catch(err => console.error(err));
+    },
+
     removeCombineReqCfg(idx) {
       // var index = this.api.combinations.indexOf(item);
       // console.log("del combine-req-cfg idx", idx);
       if (idx !== -1) {
         this.api.combinations.splice(idx, 1);
       }
+      if (this.api.combinations.length === 0) {
+        this.api.need_combine = false;
+      }
     },
+
     updateCombineReqCfg(idx, cfg) {
       // var index = this.api.combinations.indexOf(item);
       // console.log("update combin-req-cfg idx", idx, cfg);
@@ -106,11 +131,9 @@ export default {
         this.api.combinations[idx] = cfg;
       }
     },
-    addCombineReqCfg() {
-      if (!this.api.need_combine) {
-        return;
-      }
 
+    addCombineReqCfg() {
+      this.api.need_combine = true;
       if (!this.api.combinations) {
         this.api.combinations = [];
       }
@@ -122,6 +145,7 @@ export default {
         method: ""
       });
     },
+
     hdlEditAPI() {
       console.log(this.api, this.typ);
       // new a api
@@ -143,8 +167,12 @@ export default {
       }
     }
   },
+
   created() {
-    console.log(this.$route.params);
+    // console.log(this.$route.params)
+    this.getAllClusterIds(); // get cluster ids data
+
+    // then gat api detail
     let { apiID } = this.$route.params;
     if (apiID === "new") {
       this.typ = "new";

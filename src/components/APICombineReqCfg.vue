@@ -16,7 +16,14 @@
         <el-input v-model="cfg.field" size="small" placeholder="repsonse field"></el-input>
       </el-form-item>
       <el-form-item label="Target Cluster">
-        <el-input v-model="cfg.target_cluster_id" size="small" placeholder="targetClusterID"></el-input>
+        <el-select v-model="cfg.target_cluster_id" placeholder="Choose one" size="small">
+          <el-option
+            v-for="(cfg, idx) in clusterIds"
+            :key="`comb_cfg_${idx}`"
+            :value="cfg.idx"
+            :label="`${cfg.name}(${cfg.idx})`"
+          ></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="Method" size="small">
         <el-select v-model="cfg.method" placeholder="Choose one">
@@ -32,13 +39,15 @@
 </template>
 
 <script>
+import { proxyapi } from "@/apis";
 export default {
   name: "CombineReqCfg",
   props: {
     cfg: Object,
-    idx: Number,
+    idx: Number, // the i-th order in combinations
     delFunc: Function,
-    change: Function
+    change: Function,
+    clusterIds: Array
   },
   methods: {
     delCombineReqCfg() {
@@ -48,11 +57,16 @@ export default {
   watch: {
     cfg: {
       handler: function(newVal, oldVal) {
-        console.log("changed:", newVal, oldVal);
+        // console.log("changed:", newVal, oldVal);
         this.change(this.idx, this.cfg);
       },
       deep: true
     }
+  },
+
+  created() {
+    // console.log(this.clusterIds);
+    // this.getAllClusterIds();
   }
 };
 </script>

@@ -35,7 +35,7 @@
       <el-row :gutter="1" class="row">
         <el-col :span="8" key="plugin.proxy" :offset="3">
           <el-card :body-style="{ padding: '0px',cursor: 'pointer' }" shadow="hover">
-            <div @click="navigate('/configs/plugin/proxy')">
+            <div @click="navigate('/configs/proxy')">
               <img src="@/assets/gateway.jpg" class="image">
               <div style="padding: 10px;">
                 <span class="card-title">

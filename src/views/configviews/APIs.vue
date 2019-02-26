@@ -19,7 +19,14 @@
       <!-- table row -->
       <el-row style="margin-bottom:2em;">
         <el-table :data="apis" style="width: 100%">
-          <el-table-column label="Method" width="100">
+          <el-table-column label="ID">
+            <template slot-scope="scope">
+              <router-link :to="`apis/${scope.row.idx}`">
+                <span>{{ scope.row.idx }}</span>
+              </router-link>
+            </template>
+          </el-table-column>
+          <el-table-column label="Method">
             <template slot-scope="scope">
               <el-tag :type="judgeMethoTagType(scope.row.method)" size="mini">{{ scope.row.method }}</el-tag>
             </template>
@@ -29,12 +36,12 @@
               <span style="margin-left: 10px">{{ scope.row.path }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="Rewrite" width="200">
+          <el-table-column label="Rewrite">
             <template slot-scope="scope">
               <span>{{ scope.row.rewrite_path || 'EMPTY'}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="belongs to Cluster" width="200">
+          <el-table-column label="ClusterID">
             <template slot-scope="scope">
               <span>
                 <router-link
@@ -44,16 +51,16 @@
               </span>
             </template>
           </el-table-column>
-          <el-table-column label="Combination" width="200">
+          <el-table-column label="Combination">
             <template slot-scope="scope">
               <el-switch :value="scope.row.need_combine" disabled></el-switch>
             </template>
           </el-table-column>
           <el-table-column label="Op">
             <template slot-scope="scope">
-              <span id="more-rule-detail">
+              <!-- <span id="more-rule-detail">
                 <i class="el-icon-more" @click="hdlClickDetail(scope.row.idx)"></i>
-              </span>
+              </span>-->
               <span id="del-rule-btn">
                 <i class="el-icon-delete" @click="hdlDelAPI(scope.row.idx)"></i>
               </span>
@@ -90,9 +97,9 @@ export default {
     handleCurrentChange(page) {
       this.curPage = page;
     },
-    hdlClickDetail(id) {
-      this.$router.push({ path: `apis/${id}`, params: { apiID: id } });
-    },
+    // hdlClickDetail(id) {
+    //   this.$router.push({ path: `apis/${id}`, params: { apiID: id } });
+    // },
     async hdlDelAPI(id) {
       await proxyapi
         .delAPI({ id })

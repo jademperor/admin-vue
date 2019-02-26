@@ -15,21 +15,21 @@
 
     <el-row style="margin-top:1em;">
       <el-table :data="clusters" style="width: 100%">
-        <el-table-column label="ID" width="300">
+        <el-table-column label="ID">
           <template slot-scope="scope">
             <router-link :to="`clusters/${scope.row.idx}`">
               <a style="margin-left: 10px">{{scope.row.idx}}</a>
             </router-link>
           </template>
         </el-table-column>
-        <el-table-column label="Name" width="300">
+        <el-table-column label="Name">
           <template slot-scope="scope">
             <div slot="reference" class="name-wrapper">
               <el-tag size="medium" type="success">{{ scope.row.name }}</el-tag>
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="Instance Count" width="300">
+        <el-table-column label="Instance Count">
           <template slot-scope="scope">
             <span size="medium" type="success">{{ scope.row.instances.length }}</span>
           </template>
@@ -57,7 +57,6 @@
     <el-dialog
       :title="form.idx && form.idx.length?'Update':'New'"
       :visible.sync="dialogFormVisible"
-      width="400px"
     >
       <el-form ref="refForm" :model="form" label-position="left">
         <el-form-item label="Cluster Name" label-width="100px">

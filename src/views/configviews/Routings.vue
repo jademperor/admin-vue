@@ -70,7 +70,6 @@
     <el-dialog
       :title="(routingForm.idx && routingForm.idx.length > 0)?'Update':'New'"
       :visible.sync="dialogFormVisible"
-      width="400px"
     >
       <el-form ref="refNewForm" :model="routingForm" label-position="left" label-width="120px">
         <el-form-item label="ID">
@@ -82,9 +81,9 @@
         <el-form-item label="Target Cluster ID">
           <el-select v-model="routingForm.target_cluster_id">
             <el-option
-              v-for="(opt, idx) in clusterIds"
-              :value="opt.idx"
-              :label="`${opt.name}:${opt.idx}`"
+              v-for="(cfg, idx) in clusterIds"
+              :value="cfg.idx"
+              :label="`${cfg.name}:(${cfg.idx})`"
               :key="idx"
             ></el-option>
           </el-select>

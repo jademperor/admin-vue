@@ -28,26 +28,26 @@
     <!-- instance list -->
     <el-row style="margin-top:1em;">
       <el-table :data="instances" style="width: 100%">
-        <el-table-column label="ID" width="100">
+        <el-table-column label="ID">
           <template slot-scope="scope">
             <router-link :to="`${clusterID}/${scope.row.idx}`">
               <a style="margin-left: 10px">{{scope.row.idx}}</a>
             </router-link>
           </template>
         </el-table-column>
-        <el-table-column label="Instance Name" width="200">
+        <el-table-column label="Name">
           <template slot-scope="scope">
             <div slot="reference" class="name-wrapper">
               <el-tag size="medium" type="success">{{ scope.row.name }}</el-tag>
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="Instance Addr" width="200">
+        <el-table-column label="Addr" width="300">
           <template slot-scope="scope">
             <span size="medium">{{ scope.row.addr }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="Weight" width="100">
+        <el-table-column label="Weight">
           <template slot-scope="scope">
             <span size="medium">{{ scope.row.weight }}</span>
           </template>
@@ -79,7 +79,6 @@
     <el-dialog
       :title="!newInstanceForm.idx?'New Instance':'Update '"
       :visible.sync="dialogNewInstanceVisible"
-      width="500px"
     >
       <el-form
         ref="refForm"

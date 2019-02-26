@@ -2,10 +2,12 @@
   <div id="app">
     <el-container style="height:100%">
       <!-- header -->
-      <el-header style="background-color:#f56c6c">
+      <el-header style="background-color:#f56c6c" height="60px">
         <el-row>
-          <el-col :span="1" :offset="0">
-            <img src="@/assets/logo.png" alt="logo" width="50px" style="border-radius:50px">
+          <el-col :span="2" :offset="0">
+            <el-row type="flex" align="middle" style="height:60px">
+              <img src="@/assets/logo.png" alt="logo" width="40px" style="border-radius:20px">
+            </el-row>
           </el-col>
         </el-row>
       </el-header>
@@ -31,22 +33,60 @@
             </el-menu-item>
             <el-submenu index="gate.plugin">
               <template slot="title">
-                <i class="el-icon-upload"></i>
+                <i class="el-icon-menu"></i>
                 <span slot="title">Plugins Config</span>
               </template>
-              <el-menu-item index="gate.plugin.cache">Cache</el-menu-item>
-              <el-menu-item index="gate.plugin.ratelimit" disabled>Ratelimit(not support yet)</el-menu-item>
-              <el-menu-item index="gate.plugin.httplog" disabled>HTTP Log(not support yet)</el-menu-item>
+              <el-menu-item index="gate.plugin.cache">
+                <template slot="title">
+                  <i class="el-icon-success"></i>
+                  <span slot="title">Cache</span>
+                </template>
+              </el-menu-item>
+              <el-menu-item index="gate.plugin.ratelimit" disabled>
+                <template slot="title">
+                  <i class="el-icon-sort"></i>
+                  <span slot="title">Ratelimit(not support yet)</span>
+                </template>
+              </el-menu-item>
+              <el-menu-item index="gate.plugin.httplog" disabled>
+                <template slot="title">
+                  <i class="el-icon-document"></i>
+                  <span slot="title">HTTP Log(not support yet)</span>
+                </template>
+              </el-menu-item>
             </el-submenu>
             <el-submenu index="gate.proxy">
               <template slot="title">
-                <i class="el-icon-upload"></i>
+                <i class="el-icon-share"></i>
                 <span slot="title">Proxier</span>
               </template>
-              <el-menu-item index="gate.proxy.clusters">Clusters</el-menu-item>
-              <el-menu-item index="gate.proxy.apis">APIs</el-menu-item>
-              <el-menu-item index="gate.proxy.routings">Routings</el-menu-item>
+              <el-menu-item index="gate.proxy.clusters">
+                <template slot="title">
+                  <i class="el-icon-document"></i>
+                  <span slot="title">Clusters</span>
+                </template>
+              </el-menu-item>
+              <el-menu-item index="gate.proxy.apis">
+                <template slot="title">
+                  <i class="el-icon-document"></i>
+                  <span slot="title">APIs</span>
+                </template>
+              </el-menu-item>
+              <el-menu-item index="gate.proxy.routings">
+                <template slot="title">
+                  <i class="el-icon-document"></i>
+                  <span slot="title">Routings</span>
+                </template>
+              </el-menu-item>
             </el-submenu>
+
+            <el-menu-item index="github">
+              <template slot="title">
+                <i class="el-icon-info"></i>
+                <!-- Place this tag where you want the button to render. -->
+                <a href="https://github.com/jademperor" target="_">github@jademperor</a>
+              </template>
+            </el-menu-item>
           </el-menu>
         </el-aside>
 
