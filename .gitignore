@@ -63,3 +63,4 @@ typings/
 # external
 dist/
 .DS_Store
+gateway-manager-ui.dist.tar.gz

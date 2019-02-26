@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "pack": "vue-cli-service build && tar czvf gateway-manger-ui.dist.tar.gz ./dist"
   },
   "dependencies": {
     "axios": "^0.18.0",
