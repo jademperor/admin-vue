@@ -36,12 +36,12 @@
                 <i class="el-icon-menu"></i>
                 <span slot="title">Plugins Config</span>
               </template>
-              <el-menu-item index="gate.plugin.cache">
+              <!-- <el-menu-item index="gate.plugin.cache">
                 <template slot="title">
                   <i class="el-icon-success"></i>
                   <span slot="title">Cache</span>
                 </template>
-              </el-menu-item>
+              </el-menu-item>-->
               <el-menu-item index="gate.plugin.ratelimit" disabled>
                 <template slot="title">
                   <i class="el-icon-sort"></i>
@@ -129,7 +129,8 @@ export default {
   },
   methods: {
     handleSelect(key, keyPath) {
-      console.log("menu selectd: ", key);
+      keyPath;
+      // console.log("menu selectd: ", key, keyPath);
       this.activeIndex = key;
       switch (key) {
         case "gate.overview":
@@ -138,9 +139,9 @@ export default {
         case "gate.basic":
           this.$router.push("/configs/basic");
           break;
-        case "gate.plugin.cache":
-          this.$router.push("/configs/plugin/cache");
-          break;
+        // case "gate.plugin.cache":
+        //   this.$router.push("/configs/plugin/cache");
+        //   break;
         case "gate.proxy.clusters":
           this.$router.push("/configs/proxy/clusters");
           break;
@@ -161,6 +162,7 @@ export default {
         this.breadcrumbs = newVal.params.breadcrumbs;
         saveBreadcrumbs(this.breadcrumbs);
       }
+      oldVal;
     }
   },
   created() {

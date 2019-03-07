@@ -37,7 +37,7 @@ instance.interceptors.request.use((config) => {
 })
 
 instance.interceptors.response.use((response) => {
-    // console.log(response)
+    console.log(response)
     if (response.status > 300) {
         throw Error("wrong status got, " + response.status)
     }
@@ -45,10 +45,11 @@ instance.interceptors.response.use((response) => {
         Notification.error(response.data.message)
         throw Error(response.data.message)
     }
+    console.log("return the response")
     return response.data
 
 }, (error) => {
-    Message.error(error.message)
+    Notification.error(error.message)
 })
 
 function requestAPI(config) {

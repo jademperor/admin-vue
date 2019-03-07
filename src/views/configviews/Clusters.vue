@@ -95,9 +95,7 @@ export default {
           this.clusters = data.clusters;
           this.$message.success(data.message);
         })
-        .catch(err => {
-          console.error(err);
-        });
+        .catch(err => console.error(err));
     },
     async hdlEditCluster() {
       let { idx, name } = this.form;

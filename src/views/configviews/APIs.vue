@@ -1,11 +1,8 @@
 
 <template>
   <div>
-    <template v-if="apis && apis.length">
+    <template>
       <el-row style="margin-bottom: 1em">
-        <!-- <el-col :span="2">
-          <span>组数: {{total}}</span>
-        </el-col>-->
         <el-col :span="1" :offset="23">
           <el-button
             type="success"
@@ -113,6 +110,7 @@ export default {
       proxyapi
         .getAPIs({ limit, offset })
         .then(data => {
+          if (!data) return;
           this.apis = data.apis;
           this.total = data.total;
           this.$message.success(data.message);

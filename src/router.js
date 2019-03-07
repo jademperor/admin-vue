@@ -3,8 +3,9 @@ import Dash from './views/Dash'
 import Config from './views/Config'
 // import Plugins from './views/Plugins'
 import PluginConfig from './views/PluginConfig'
+import NotFound from './views/NotFound'
 import BaseConfig from './views/configviews/Base'
-import PluginCache from './views/configviews/PluginCache'
+// import PluginCache from './views/configviews/PluginCache'
 
 import PluginProxy from '@/views/configviews/PluginProxy'
 import ClusterInstance from '@/views/configviews/ClusterInstance'
@@ -20,7 +21,8 @@ const router = new VueRouter({
   routes: [
     {
       path: '/',
-      redirect: _ => {
+      redirect: r => {
+        r;
         return '/dashbord'
       },
     },
@@ -54,12 +56,12 @@ const router = new VueRouter({
           // },
           meta: { breadcrumb: 'Plugin' },
           children: [
-            {
-              name: 'plugin.cache',
-              path: 'cache',
-              component: PluginCache,
-              meta: { breadcrumb: 'Cache' }
-            }
+            // {
+            //   name: 'plugin.cache',
+            //   path: 'cache',
+            //   component: PluginCache,
+            //   meta: { breadcrumb: 'Cache' }
+            // }
           ]
         },
         {
@@ -107,12 +109,20 @@ const router = new VueRouter({
           ]
         }
       ]
+    },
+    {
+      path: '/404',
+      component: NotFound
+    },
+    {
+      path: '*',
+      redirect: '/404'
     }
   ]
 })
 
 router.beforeEach((to, from, next) => {
-  let _ = from
+  // let _ = from
   // console.log('router.beforeEach called', to, from)
   to.params.breadcrumbs = []
   to.matched.forEach(matched => {
